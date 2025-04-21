@@ -3,6 +3,141 @@
 {% load humanize %}
 
 {% block content %}
+<style>
+    /* Container chính */
+    .container.my-5 {
+        max-width: 900px;
+        background-color: #ffffff;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    /* Tiêu đề chính */
+    h1.mb-4 {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #007bff;
+        text-align: center;
+    }
+    /* Tiêu đề phụ */
+    h3 {
+        font-size: 1.5rem;
+        font-weight: 500;
+        color: #333;
+        margin-bottom: 1rem;
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 0.5rem;
+    }
+    /* Form nhập địa chỉ */
+    .mb-3 label {
+        font-weight: 500;
+        color: #555;
+        margin-bottom: 0.3rem;
+        display: block;
+    }
+    .mb-3 input,
+    .mb-3 select {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+    }
+    .mb-3 input:focus,
+    .mb-3 select:focus {
+        border-color: #007bff;
+        outline: none;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+    }
+    /* Bảng đơn hàng */
+    .table {
+        background-color: #f8f9fa;
+    }
+    .table thead th {
+        background-color: #007bff;
+        color: #fff;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+    }
+    .table tbody td {
+        font-size: 1rem;
+        color: #333;
+    }
+    .table tfoot th {
+        font-weight: 600;
+        color: #007bff;
+    }
+    /* Phương thức thanh toán */
+    h4 {
+        font-size: 1.25rem;
+        font-weight: 500;
+        color: #333;
+        margin-bottom: 1rem;
+    }
+    .form-check {
+        margin-bottom: 0.75rem;
+    }
+    .form-check-input {
+        margin-top: 0.3rem;
+        cursor: pointer;
+    }
+    .form-check-label {
+        font-size: 1rem;
+        color: #555;
+        cursor: pointer;
+    }
+    #bank_qr, #card_fields {
+        background-color: #f1faff;
+        padding: 1rem;
+        border-radius: 5px;
+        margin-bottom: 1rem;
+    }
+    #bank_qr img {
+        max-width:150px;
+        border: 1px solid #007bff;
+        padding: 0.5rem;
+        background-color: #fff;
+    }
+    /* Các field thẻ */
+    #card_fields .form-label {
+        font-weight: 500;
+        color: #555;
+        margin-bottom: 0.3rem;
+        display: block;
+    }
+    #card_fields input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        font-size: 1rem;
+        margin-bottom: 1rem;
+    }
+    /* Nút thanh toán */
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+        padding: 0.75rem 2rem;
+        font-size: 1.1rem;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+    .btn-success:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+    }
+    /* Responsive */
+    @media (max-width: 768px) {
+        .container.my-5 { padding: 1.5rem; }
+        h1.mb-4 { font-size: 1.5rem; }
+        h3 { font-size: 1.25rem; }
+        .table th, .table td { font-size: 0.9rem; padding: 0.5rem; }
+        .btn-success { width: 100%; padding: 0.75rem; }
+    }
+</style>
+
 <div class="container my-5">
   <h1 class="mb-4">Thanh toán</h1>
   <form method="post">
@@ -11,8 +146,28 @@
       <!-- Thông tin địa chỉ -->
       <div class="col-md-6">
         <h3>Địa chỉ giao hàng</h3>
-        {{ form.as_p }}
+        <div class="mb-3">
+          {{ form.full_name.label_tag }}
+          {{ form.full_name }}
+          {{ form.full_name.errors }}
+        </div>
+        <div class="mb-3">
+          {{ form.address.label_tag }}
+          {{ form.address }}
+          {{ form.address.errors }}
+        </div>
+        <div class="mb-3">
+          {{ form.city.label_tag }}
+          {{ form.city }}
+          {{ form.city.errors }}
+        </div>
+        <div class="mb-3">
+          {{ form.postal_code.label_tag }}
+          {{ form.postal_code }}
+          {{ form.postal_code.errors }}
+        </div>
       </div>
+
       <!-- Thông tin đơn hàng -->
       <div class="col-md-6">
         <h3>Đơn hàng của bạn</h3>
@@ -49,28 +204,35 @@
     <div class="mb-4">
       <h4>Phương thức thanh toán</h4>
       <div class="form-check">
-        <input class="form-check-input" type="radio" name="payment_method" id="pm_bank" value="BANK_TRANSFER" checked>
-        <label class="form-check-label" for="pm_bank">
-          Chuyển khoản ngân hàng
-        </label>
-      </div>
-      <!-- QR code cho chuyển khoản -->
-      <div id="bank_qr" class="ps-4 mt-2">
-        <p>Quét mã QR để thanh toán:</p>
-        <img src="{% static 'img/bank_qr.png' %}" alt="Mã QR chuyển khoản" class="img-thumbnail" style="max-width:150px;">
+        <input class="form-check-input" type="radio" name="payment_method" id="pm_bank" value="bank" checked>
+        <label class="form-check-label" for="pm_bank">Chuyển khoản ngân hàng</label>
       </div>
       <div class="form-check">
-        <input class="form-check-input" type="radio" name="payment_method" id="pm_cod" value="COD">
-        <label class="form-check-label" for="pm_cod">
-          Thanh toán khi nhận hàng (COD)
-        </label>
+        <input class="form-check-input" type="radio" name="payment_method" id="pm_cod" value="cod">
+        <label class="form-check-label" for="pm_cod">Thanh toán khi nhận hàng (COD)</label>
       </div>
       <div class="form-check">
-        <input class="form-check-input" type="radio" name="payment_method" id="pm_card" value="BANK_CARD">
-        <label class="form-check-label" for="pm_card">
-          Thanh toán bằng thẻ ngân hàng
-        </label>
+        <input class="form-check-input" type="radio" name="payment_method" id="pm_card" value="card">
+        <label class="form-check-label" for="pm_card">Thanh toán bằng thẻ ngân hàng</label>
       </div>
+    </div>
+
+    <!-- QR code chuyển khoản -->
+    <div id="bank_qr">
+      <p>Quét mã QR để thanh toán:</p>
+      <img src="{% static 'img/bank_qr.png' %}" alt="Mã QR chuyển khoản" class="img-thumbnail">
+    </div>
+
+    <!-- Nhập thông tin thẻ -->
+    <div id="card_fields">
+      <label for="card_number" class="form-label">Số thẻ</label>
+      <input type="number" id="card_number" name="card_number" placeholder="XXXX XXXX XXXX XXXX">
+
+      <label for="card_expiry" class="form-label">Hết hạn (MM/YY)</label>
+      <input type="text" id="card_expiry" name="card_expiry" placeholder="MM/YY">
+
+      <label for="card_cvv" class="form-label">CVV</label>
+      <input type="number" id="card_cvv" name="card_cvv" placeholder="XXX">
     </div>
 
     <button type="submit" class="btn btn-success">Xác nhận và thanh toán</button>
@@ -78,13 +240,26 @@
 </div>
 
 <script>
-  // Hiển thị/ẩn QR code tùy chọn phương thức
-  function toggleQR() {
-    document.getElementById('bank_qr').style.display = document.getElementById('pm_bank').checked ? 'block' : 'none';
+  const pmBank = document.getElementById('pm_bank');
+  const pmCod  = document.getElementById('pm_cod');
+  const pmCard = document.getElementById('pm_card');
+  const qrDiv     = document.getElementById('bank_qr');
+  const cardDiv   = document.getElementById('card_fields');
+
+  function toggleSections() {
+    if (pmBank.checked) {
+      qrDiv.style.display   = 'block';
+      cardDiv.style.display = 'none';
+    } else if (pmCard.checked) {
+      qrDiv.style.display   = 'none';
+      cardDiv.style.display = 'block';
+    } else {
+      qrDiv.style.display   = 'none';
+      cardDiv.style.display = 'none';
+    }
   }
-  document.getElementById('pm_bank').addEventListener('change', toggleQR);
-  document.getElementById('pm_cod').addEventListener('change', toggleQR);
-  document.getElementById('pm_card').addEventListener('change', toggleQR);
-  window.addEventListener('load', toggleQR);
+
+  [pmBank, pmCod, pmCard].forEach(el => el.addEventListener('change', toggleSections));
+  document.addEventListener('DOMContentLoaded', toggleSections);
 </script>
 {% endblock %}

@@ -97,17 +97,21 @@ def cart_view(request):
 def checkout(request):
     cart = request.session.get('cart', {})
     if not cart:
-        return redirect('product_list')
+        return redirect('home')
 
     if request.method == 'POST':
         form = CheckoutForm(request.POST)
         if form.is_valid():
+            pm = form.cleaned_data['payment_method']
             order = Order.objects.create(
                 user=request.user,
                 full_name=form.cleaned_data['full_name'],
                 address=form.cleaned_data['address'],
                 city=form.cleaned_data['city'],
                 postal_code=form.cleaned_data['postal_code'],
+                payment_method=pm,
+                paid=(pm != 'cod'),
+                status=('awaiting_shipment' if pm in ('bank', 'card') else 'pending'),
             )
             for pid, qty in cart.items():
                 product = get_object_or_404(Product, id=pid)
@@ -117,28 +121,33 @@ def checkout(request):
                     price=product.price,
                     quantity=qty,
                 )
-            # Xóa giỏ hàng sau khi đặt xong
             del request.session['cart']
             return redirect('order_success', order_id=order.id)
     else:
         form = CheckoutForm()
 
-    # Chuẩn bị dữ liệu để hiển thị lên template
+    # Chuẩn bị items và tổng
     items = []
     total = 0
     for pid, qty in cart.items():
         product = get_object_or_404(Product, id=pid)
         line_total = product.price * qty
-        items.append({'product': product, 'quantity': qty, 'line_total': line_total})
+        items.append({
+            'product': product,
+            'quantity': qty,
+            # format VND
+            'price_vnd': f"{int(product.price):,}".replace(',', '.') + " VND",
+            'line_total_vnd': f"{int(line_total):,}".replace(',', '.') + " VND",
+        })
         total += line_total
+
+    total_vnd = f"{int(total):,}".replace(',', '.') + " VND"
 
     return render(request, 'shop/checkout.html', {
         'form': form,
         'items': items,
-        'total': total,
+        'total_vnd': total_vnd,
     })
-
-
 @login_required
 def order_success(request, order_id):
     order = get_object_or_404(Order, id=order_id, user=request.user)
@@ -185,4 +194,21 @@ def admin_product_delete(request, pk):
         return redirect('admin_product_list')
     return render(request, 'shop/admin_product_confirm_delete.html', {
         'product': product,
+    })
+@login_required
+def order_list(request):
+    # Lấy tất cả đơn hàng của user hiện tại
+    orders = Order.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, 'shop/order_list.html', {
+        'orders': orders,
+    })
+
+@login_required
+def order_detail(request, order_id):
+    # Lấy đơn và bảo đảm đúng user
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    items = order.items.select_related('product').all()
+    return render(request, 'shop/order_detail.html', {
+        'order': order,
+        'items': items,
     })

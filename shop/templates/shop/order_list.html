@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block content %}
+<style>
+    /* Container chính */
+    .container.my-5 {
+        max-width: 900px; /* Giới hạn chiều rộng */
+        background-color: #ffffff; /* Nền trắng */
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Bóng nhẹ */
+    }
+
+    /* Tiêu đề */
+    h1 {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #007bff; /* Màu xanh thương hiệu */
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    /* Bảng đơn hàng */
+    .table {
+        border-collapse: separate;
+        border-spacing: 0;
+        background-color: #f8f9fa; /* Nền nhạt */
+    }
+
+    .table th,
+    .table td {
+        padding: 0.75rem;
+        vertical-align: middle;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .table thead th {
+        background-color: #007bff; /* Đầu bảng màu xanh */
+        color: #fff;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+    }
+
+    .table tbody td {
+        font-size: 1rem;
+        color: #333;
+    }
+
+    /* Trạng thái đơn hàng */
+    .badge {
+        font-size: 0.9rem;
+        padding: 0.5rem 0.75rem;
+        border-radius: 20px;
+    }
+
+    .badge.bg-success {
+        background-color: #28a745 !important; /* Xanh lá cho "Đã thanh toán" */
+    }
+
+    .badge.bg-warning {
+        background-color: #ffc107 !important; /* Vàng cho "Chưa thanh toán" */
+        color: #333 !important;
+    }
+
+    /* Nút "Xem" */
+    .btn-outline-primary {
+        font-size: 0.9rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: 5px;
+        color: #007bff;
+        border-color: #007bff;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: #007bff;
+        color: #fff;
+        border-color: #0056b3;
+    }
+
+    /* Thông báo không có đơn hàng */
+    p {
+        font-size: 1.1rem;
+        color: #555;
+        text-align: center;
+        padding: 2rem;
+        background-color: #f1faff; /* Nền nhạt */
+        border-radius: 5px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .container.my-5 {
+            padding: 1.5rem;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+        }
+
+        .table th,
+        .table td {
+            font-size: 0.9rem;
+            padding: 0.5rem;
+        }
+
+        .badge {
+            font-size: 0.8rem;
+            padding: 0.4rem 0.6rem;
+        }
+
+        .btn-outline-primary {
+            font-size: 0.8rem;
+            padding: 0.2rem 0.5rem;
+        }
+
+        p {
+            font-size: 1rem;
+            padding: 1.5rem;
+        }
+    }
+</style>
+
+<div class="container my-5">
+  <h1>Đơn hàng của bạn</h1>
+  {% if orders %}
+    <table class="table rounded shadow-sm">
+      <thead class="table-light">
+        <tr>
+          <th>#</th>
+          <th>Ngày đặt</th>
+          <th>Trạng thái</th>
+          <th>Tổng tiền</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for o in orders %}
+        <tr>
+          <td>{{ o.id }}</td>
+          <td>{{ o.created_at|date:"d/m/Y H:i" }}</td>
+          <td>
+            {% if o.paid %}
+              <span class="badge bg-success">Đã thanh toán</span>
+            {% else %}
+              <span class="badge bg-warning text-dark">Chưa thanh toán</span>
+            {% endif %}
+          </td>
+          <td>
+            {{ o.total_cost|intcomma }} VND
+          </td>
+          <td>
+            <a href="{% url 'order_detail' o.id %}" class="btn btn-sm btn-outline-primary">
+              Xem
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>Bạn chưa có đơn hàng nào.</p>
+  {% endif %}
+</div>
+{% endblock %}

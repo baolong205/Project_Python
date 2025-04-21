@@ -1,5 +1,6 @@
 from django import forms
-from .models import Product
+from .models import Product, Order
+
 
 class ProductForm(forms.ModelForm):
     class Meta:
@@ -7,8 +8,24 @@ class ProductForm(forms.ModelForm):
         fields = ['category', 'name', 'description', 'price', 'image', 'stock']
 
 
-class CheckoutForm(forms.Form):
-    full_name   = forms.CharField(max_length=255, widget=forms.TextInput(attrs={'class':'form-control'}))
-    address     = forms.CharField(max_length=500, widget=forms.TextInput(attrs={'class':'form-control'}))
-    city        = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class':'form-control'}))
-    postal_code = forms.CharField(max_length=20, widget=forms.TextInput(attrs={'class':'form-control'}))
+class CheckoutForm(forms.ModelForm):
+    PAYMENT_CHOICES = [
+        ('cod',  'Thanh toán khi nhận hàng'),
+        ('bank', 'Chuyển khoản ngân hàng'),
+        ('card', 'Thẻ ngân hàng'),
+    ]
+    payment_method = forms.ChoiceField(
+        label="Phương thức thanh toán",
+        choices=PAYMENT_CHOICES,
+        widget=forms.RadioSelect,
+    )
+
+    class Meta:
+        model = Order
+        fields = ['full_name', 'address', 'city', 'postal_code', 'payment_method']
+        labels = {
+            'full_name': 'Họ và tên',
+            'address': 'Địa chỉ giao hàng',
+            'city': 'Thành phố',
+            'postal_code': 'Mã bưu điện',
+        }

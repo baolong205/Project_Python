@@ -1,6 +1,83 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<style>
+  /* Container chính */
+  .container.my-5 {
+    max-width: 600px; /* Giới hạn chiều rộng container */
+    padding: 2rem; /* Khoảng cách bên trong */
+    background-color: #f8f9fa; /* Màu nền sáng */
+    border-radius: 10px; /* Bo góc */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng nhẹ */
+  }
+
+  /* Tiêu đề */
+  h1 {
+    font-size: 1.8rem; /* Kích thước chữ vừa phải */
+    font-weight: 600; /* Độ đậm chữ */
+    color: #333; /* Màu chữ tối */
+    margin-bottom: 1.5rem; /* Khoảng cách dưới */
+  }
+
+  /* Form chứa nút */
+  .d-inline-block {
+    display: flex !important; /* Sử dụng flex để căn chỉnh nút */
+    gap: 1rem; /* Khoảng cách giữa các nút */
+    justify-content: center; /* Căn giữa nút */
+  }
+
+  /* Nút chung */
+  .btn {
+    padding: 0.75rem 1.5rem; /* Khoảng cách bên trong nút */
+    font-size: 1rem; /* Kích thước chữ */
+    border-radius: 5px; /* Bo góc nhẹ */
+    transition: all 0.3s ease; /* Hiệu ứng chuyển đổi mượt */
+  }
+
+  /* Nút Xóa (màu đỏ) */
+  .btn-danger {
+    background-color: #dc3545; /* Màu đỏ Bootstrap */
+    border-color: #dc3545;
+  }
+
+  .btn-danger:hover {
+    background-color: #c82333; /* Màu đỏ đậm hơn khi hover */
+    border-color: #bd2130;
+  }
+
+  /* Nút Hủy (màu xám) */
+  .btn-secondary {
+    background-color: #6c757d; /* Màu xám Bootstrap */
+    border-color: #6c757d;
+  }
+
+  .btn-secondary:hover {
+    background-color: #5a6268; /* Màu xám đậm hơn khi hover */
+    border-color: #545b62;
+  }
+
+  /* Responsive cho màn hình nhỏ */
+  @media (max-width: 576px) {
+    .container.my-5 {
+      padding: 1.5rem; /* Giảm khoảng cách trên màn hình nhỏ */
+    }
+
+    h1 {
+      font-size: 1.5rem; /* Giảm kích thước tiêu đề */
+    }
+
+    .btn {
+      padding: 0.6rem 1.2rem; /* Giảm kích thước nút */
+      font-size: 0.9rem; /* Giảm kích thước chữ */
+    }
+
+    .d-inline-block {
+      flex-direction: column; /* Xếp nút theo chiều dọc */
+      gap: 0.75rem; /* Giảm khoảng cách */
+    }
+  }
+</style>
+
 <div class="container my-5 text-center">
   <h1>Bạn có chắc muốn xóa sản phẩm “{{ product.name }}” không?</h1>
   <form method="post" class="d-inline-block mt-4">

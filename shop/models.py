@@ -37,9 +37,6 @@ class Product(models.Model):
 
     @property
     def price_vnd(self):
-        """
-        Format price as VND with thousand separators.
-        """
         try:
             amount = int(self.price)
         except (ValueError, TypeError):
@@ -48,7 +45,6 @@ class Product(models.Model):
         return f"{s} VND"
 
 
-# ------------ Models cho Order & OrderItem ------------
 class Order(models.Model):
     user        = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     full_name   = models.CharField(max_length=255)
@@ -58,8 +54,30 @@ class Order(models.Model):
     created_at  = models.DateTimeField(auto_now_add=True)
     paid        = models.BooleanField(default=False)
 
+    PAYMENT_CHOICES = [
+        ('cod', 'Thanh toán khi nhận hàng'),
+        ('bank', 'Chuyển khoản ngân hàng'),
+        ('card', 'Thẻ ngân hàng'),
+    ]
+    STATUS_CHOICES = [
+        ('pending', 'Chờ xử lý'),
+        ('awaiting_shipment', 'Sắp được vận chuyển'),
+        ('shipped', 'Đã vận chuyển'),
+    ]
+
+    payment_method = models.CharField(
+        max_length=20,
+        choices=PAYMENT_CHOICES,
+        default='cod'
+    )
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='pending'
+    )
+
     def __str__(self):
-        return f"Order {self.id} by {self.user.username}"
+        return f"Order {self.id} by {self.user.username} ({self.get_status_display()})"
 
     @property
     def total_cost(self):
@@ -90,9 +108,6 @@ class OrderItem(models.Model):
 
     @property
     def cost_vnd(self):
-        """
-        Format line total as VND with thousand separators.
-        """
         try:
             amount = int(self.cost)
         except (ValueError, TypeError):
@@ -102,9 +117,6 @@ class OrderItem(models.Model):
 
     @property
     def price_vnd(self):
-        """
-        Format unit price as VND with thousand separators.
-        """
         try:
             amount = int(self.price)
         except (ValueError, TypeError):
