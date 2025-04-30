@@ -5,13 +5,12 @@
     <meta charset="UTF-8">
     <title>{% block title %}Bao Long{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <link rel="stylesheet"href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-
-    <!-- CSS nhúng trực tiếp -->
+    {% block extra_css %}{% endblock %}
     <style>
         /* ========== 1. Base & Link chung ========== */
         body {
@@ -24,7 +23,7 @@
             text-decoration: none;
         }
         a:hover {
-            color: #0d6efd !important;          /* hover xanh */
+            color:rgb(0, 0, 0) !important;          /* hover xanh */
             text-decoration: underline;
         }
 
@@ -129,6 +128,14 @@
             <i class="bi bi-bag"></i> Giỏ hàng
           </a>
         </li>
+        {% if user.is_superuser %}
+          <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'admin_product_list' %}active{% endif %}"
+              href="{% url 'admin_product_list' %}">
+              <i class="bi bi-tools"></i> Quản lý sản phẩm
+            </a>
+          </li>
+        {% endif %}
 
         {% if user.is_authenticated %}
           <li class="nav-item">

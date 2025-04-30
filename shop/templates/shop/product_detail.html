@@ -1,11 +1,38 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block extra_css %}
+<style>
+  /* =========== Tăng/giảm quantity =========== */
+  #decBtn, #incBtn { cursor: pointer; }
+
+  /* =========== Đánh giá sao =========== */
+  .rating-input {
+    direction: rtl;
+    unicode-bidi: bidi-override;
+    font-size: 1.5rem;
+    display: inline-block;
+  }
+  .rating-input input { display: none; }
+  .rating-input label.star {
+    color: #e4e5e9;
+    cursor: pointer;
+    transition: color 0.2s;
+    padding: 0 4px;
+  }
+  .rating-input label.star:hover,
+  .rating-input label.star:hover ~ label.star,
+  .rating-input input:checked ~ label.star {
+    color: #ffc107;
+  }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="container my-5">
   <div class="card shadow-sm">
+    <!-- 1. Ảnh & thông tin cơ bản -->
     <div class="row g-0">
-      <!-- Ảnh sản phẩm -->
       <div class="col-md-6">
         {% if product.image %}
           <img src="{{ product.image.url }}"
@@ -17,19 +44,14 @@
                alt="No image">
         {% endif %}
       </div>
-
-      <!-- Thông tin sản phẩm -->
       <div class="col-md-6">
         <div class="card-body">
           <h2 class="card-title fw-bold">{{ product.name }}</h2>
           <p class="text-muted small mb-2">Danh mục: {{ product.category.name }}</p>
           <h3 class="text-danger mb-3">{{ product.price_vnd }}</h3>
-          <div class="mb-3 d-flex align-items-center">
-            <span class="text-warning me-2">⭐ {{ product.rating }}</span>
-            <span class="text-muted">Còn lại: {{ product.stock }}</span>
-          </div>
           <p class="mb-4">{{ product.description }}</p>
 
+          <!-- Form thêm vào giỏ / mua ngay -->
           <form method="post" action="{% url 'cart' %}">
             {% csrf_token %}
             <input type="hidden" name="product_id" value="{{ product.id }}">
@@ -48,7 +70,6 @@
                 <button type="button" class="btn btn-outline-secondary" id="incBtn">+</button>
               </div>
             </div>
-
             <div class="d-flex gap-2">
               <button type="submit" class="btn btn-success flex-fill">
                 <i class="bi bi-cart-plus"></i> Thêm vào giỏ
@@ -59,46 +80,105 @@
             </div>
           </form>
 
-          <a href="{% url 'home' %}" class="btn btn-link mt-3">
-            ← Quay lại danh sách
-          </a>
+          <a href="{% url 'home' %}" class="btn btn-link mt-3">← Quay lại danh sách</a>
         </div>
       </div>
     </div>
+
+    <hr/>
+
+    <!-- 2. Điểm trung bình -->
+    {% with n=product.avg_rating_int %}
+      {% with stars="★★★★★"|slice:":n" %}
+        <div class="card-body">
+          <strong>Điểm trung bình:</strong>
+          <span class="text-warning">
+            {% for _ in stars %}
+              <i class="bi bi-star-fill"></i>
+            {% endfor %}
+          </span>
+          <small>({{ product.avg_rating|floatformat:"1" }})</small>
+        </div>
+      {% endwith %}
+    {% endwith %}
+
+    <hr/>
+
+    <!-- 3. Danh sách review -->
+    <div class="card-body">
+      <h3 class="mb-4">Đánh giá & nhận xét</h3>
+      {% for rev in reviews %}
+        {% with stars="★★★★★"|slice:":rev.rating" %}
+          <div class="mb-3 p-3 border rounded">
+            <strong>{{ rev.user.username }}</strong>
+            <span class="text-warning">
+              {% for _ in stars %}
+                <i class="bi bi-star-fill"></i>
+              {% endfor %}
+            </span>
+            <small class="text-muted">({{ rev.created_at|date:"Y-m-d H:i" }})</small>
+            <p class="mt-2">{{ rev.comment }}</p>
+          </div>
+        {% endwith %}
+      {% empty %}
+        <p>Chưa có đánh giá nào.</p>
+      {% endfor %}
+
+      <!-- 4. Form gửi review -->
+      {% if user.is_authenticated %}
+        <form method="post" class="mb-5">
+          {% csrf_token %}
+          {{ review_form.non_field_errors }}
+
+          <div class="mb-3">
+            <label>Chọn số sao:</label>
+            <div class="rating-input">
+              {% for value,label in review_form.fields.rating.choices %}
+                <input
+                  type="radio"
+                  name="rating"
+                  id="star{{ value }}"
+                  value="{{ value }}"
+                  {% if review_form.rating.value|stringformat:"s" == value|stringformat:"s" %}checked{% endif %}>
+                <label for="star{{ value }}" class="star">
+                  <i class="bi bi-star-fill"></i>
+                </label>
+              {% endfor %}
+            </div>
+            {{ review_form.rating.errors }}
+          </div>
+
+          <div class="mb-3">
+            <label>Nhận xét:</label><br>
+            {{ review_form.comment }}<br>
+            {{ review_form.comment.errors }}
+          </div>
+
+          <button type="submit" name="submit_review" class="btn btn-primary">
+            Gửi đánh giá
+          </button>
+        </form>
+      {% else %}
+        <p><a href="{% url 'login' %}">Đăng nhập</a> để gửi đánh giá.</p>
+      {% endif %}
+    </div>
   </div>
 </div>
+{% endblock %}
 
+{% block extra_js %}
 <script>
   // JS tăng/giảm số lượng
-  const decBtn = document.getElementById('decBtn');
-  const incBtn = document.getElementById('incBtn');
-  const qtyInput = document.getElementById('qtyInput');
-
+  const decBtn = document.getElementById('decBtn'),
+        incBtn = document.getElementById('incBtn'),
+        qtyInput = document.getElementById('qtyInput');
   decBtn.addEventListener('click', () => {
-    let v = parseInt(qtyInput.value) || 1;
-    if (v > 1) qtyInput.value = v - 1;
+    let v = parseInt(qtyInput.value)||1;
+    if (v>1) qtyInput.value = v-1;
   });
-
   incBtn.addEventListener('click', () => {
-    let v = parseInt(qtyInput.value) || 1;
-    if (v < {{ product.stock }}) qtyInput.value = v + 1;
+    let v = parseInt(qtyInput.value)||1;
+    if (v<{{ product.stock }}) qtyInput.value = v+1;
   });
 </script>
-
-<style>
-  .card {
-    border-radius: 0.75rem;
-    overflow: hidden;
-  }
-  .card-body {
-    padding: 2rem;
-  }
-  .shadow-sm {
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
-  }
-  .input-group .btn {
-    border-radius: 0;
-  }
-</style>
 {% endblock %}
-  

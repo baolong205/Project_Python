@@ -1,16 +1,183 @@
 {% extends 'base.html' %}
+
 {% block content %}
+<style>
+    /* Container chính */
+    .container {
+        max-width: 1200px; /* Giới hạn chiều rộng */
+        padding: 2rem 1rem;
+    }
+
+    /* Tiêu đề danh mục */
+    h2 {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #007bff; /* Màu xanh thương hiệu */
+        text-align: center;
+        margin-bottom: 2rem;
+        border-bottom: 2px solid #007bff; /* Đường viền dưới màu xanh */
+        padding-bottom: 0.5rem;
+        display: inline-block;
+    }
+
+    /* Row chứa các card */
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center; /* Căn giữa các card */
+    }
+
+    /* Card sản phẩm */
+    .col-md-4.mb-4 {
+        display: flex;
+        flex: 0 0 33.333333%; /* Đảm bảo 3 card trên 1 hàng */
+        max-width: 33.333333%;
+        padding: 0 15px; /* Khoảng cách giữa các card */
+    }
+
+    .card {
+        border: none; /* Xóa viền mặc định */
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Bóng nhẹ */
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        background-color: #fff;
+        overflow: hidden; /* Đảm bảo hình ảnh không tràn */
+        display: flex;
+        flex-direction: column;
+        height: 100%; /* Đảm bảo card chiếm toàn chiều cao của cột */
+    }
+
+    .card:hover {
+        transform: translateY(-5px); /* Nâng card khi hover */
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Bóng đậm hơn */
+    }
+
+    /* Hình ảnh sản phẩm */
+    .card-img-top {
+        width: 100%;
+        height: 250px; /* Chiều cao cố định */
+        object-fit: cover; /* Cắt hình ảnh để lấp đầy khung */
+        object-position: center; /* Căn giữa hình ảnh */
+        background-color: #f8f9fa; /* Nền nhạt cho hình ảnh */
+        padding: 1rem; /* Khoảng cách bên trong */
+        transition: transform 0.3s ease; /* Hiệu ứng phóng to khi hover */
+    }
+
+    .card:hover .card-img-top {
+        transform: scale(1.05); /* Phóng to nhẹ khi hover card */
+    }
+
+    .card-body {
+        padding: 1rem;
+        text-align: center;
+        flex-grow: 1; /* Đảm bảo card-body chiếm không gian còn lại */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; /* Đẩy nút xuống dưới */
+    }
+
+    .card-body h5 {
+        font-size: 1.1rem;
+        font-weight: 500;
+        color: #333;
+        margin-bottom: 0.5rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap; /* Giới hạn tên sản phẩm 1 dòng */
+    }
+
+    .card-body p {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #007bff; /* Giá màu xanh */
+        margin-bottom: 0.5rem;
+    }
+
+    /* Nút "Xem chi tiết" */
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        font-size: 0.9rem;
+        padding: 0.5rem 1.5rem;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        margin-top: auto; /* Đẩy nút xuống dưới cùng của card-body */
+        align-self: center; /* Căn giữa nút */
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+    }
+
+    /* Thông báo không có sản phẩm */
+    .row p {
+        font-size: 1.1rem;
+        color: #555;
+        text-align: center;
+        padding: 2rem;
+        background-color: #f1faff; /* Nền nhạt */
+        border-radius: 5px;
+        width: 100%;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        .col-md-4.mb-4 {
+            flex: 0 0 50%; /* 2 card trên 1 hàng */
+            max-width: 50%;
+        }
+
+        .card-img-top {
+            height: 200px; /* Giảm chiều cao hình ảnh trên mobile */
+            padding: 0.75rem;
+        }
+
+        .card-body h5 {
+            font-size: 1rem;
+        }
+
+        .card-body p {
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            font-size: 0.8rem;
+            padding: 0.4rem 1rem;
+        }
+
+        .row p {
+            font-size: 1rem;
+            padding: 1.5rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .col-md-4.mb-4 {
+            flex: 0 0 100%; /* 1 card trên 1 hàng */
+            max-width: 100%;
+        }
+
+        .card-img-top {
+            height: 180px; /* Giảm thêm trên màn hình rất nhỏ */
+        }
+    }
+</style>
 
 <h2>Sản phẩm trong danh mục: {{ category.name }}</h2>
 <div class="row">
   {% for p in products %}
     <div class="col-md-4 mb-4">
       <div class="card h-100">
-        {% if p.image %}<img src="{{ p.image.url }}" class="card-img-top">{% endif %}
+        {% if p.image %}<img src="{{ p.image.url }}" class="card-img-top" alt="{{ p.name }}">{% endif %}
         <div class="card-body">
           <h5>{{ p.name }}</h5>
           <p>{{ p.price|floatformat:0 }} ₫</p>
-          <a href="{% url 'product_detail' p.id %}" class="btn btn-primary">Xem</a>
+          <a href="{% url 'product_detail' p.id %}" class="btn btn-primary">Xem chi tiết</a>
         </div>
       </div>
     </div>

@@ -1,21 +1,17 @@
 from django.db import models
 from django.utils.text import slugify
 from django.conf import settings
-
+from django.db.models import Avg
 
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(unique=True, blank=True)
-
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
-
     def __str__(self):
         return self.name
-
-
 class Product(models.Model):
     category    = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
     name        = models.CharField(max_length=255)
@@ -25,7 +21,6 @@ class Product(models.Model):
     image       = models.ImageField(upload_to='products/', blank=True, null=True)
     created_at  = models.DateTimeField(auto_now_add=True)
     stock       = models.IntegerField(default=0)
-    rating      = models.FloatField(default=0.0)
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -33,17 +28,35 @@ class Product(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.name} ({self.category.name})"
+        return self.name
 
     @property
     def price_vnd(self):
-        try:
-            amount = int(self.price)
-        except (ValueError, TypeError):
-            return str(self.price)
-        s = f"{amount:,}".replace(",", ".")
+        amt = int(self.price)
+        s = f"{amt:,}".replace(",", ".")
         return f"{s} VND"
 
+    @property
+    def avg_rating(self):
+        avg = self.reviews.aggregate(Avg('rating'))['rating__avg']
+        return avg or 0.0
+
+    @property
+    def avg_rating_int(self):
+        # Lấy phần nguyên (floor) của avg_rating
+        return int(self.avg_rating or 0)
+class Review(models.Model):
+    RATING_CHOICES = [(i, f"{i} sao") for i in range(1,5)]
+    product    = models.ForeignKey(Product, related_name='reviews', on_delete=models.CASCADE)
+    user       = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    rating     = models.PositiveSmallIntegerField(choices=RATING_CHOICES)
+    comment    = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+    def __str__(self):
+        return f"{self.user.username} đánh giá {self.product.name}"
 
 class Order(models.Model):
     user        = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -55,14 +68,14 @@ class Order(models.Model):
     paid        = models.BooleanField(default=False)
 
     PAYMENT_CHOICES = [
-        ('cod', 'Thanh toán khi nhận hàng'),
+        ('cod',  'Thanh toán khi nhận hàng'),
         ('bank', 'Chuyển khoản ngân hàng'),
         ('card', 'Thẻ ngân hàng'),
     ]
     STATUS_CHOICES = [
-        ('pending', 'Chờ xử lý'),
+        ('pending',           'Chờ xử lý'),
         ('awaiting_shipment', 'Sắp được vận chuyển'),
-        ('shipped', 'Đã vận chuyển'),
+        ('shipped',           'Đã vận chuyển'),
     ]
 
     payment_method = models.CharField(

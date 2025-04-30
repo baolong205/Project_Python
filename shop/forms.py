@@ -1,12 +1,10 @@
 from django import forms
-from .models import Product, Order
-
+from .models import Product, Order, Review
 
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ['category', 'name', 'description', 'price', 'image', 'stock']
-
 
 class CheckoutForm(forms.ModelForm):
     PAYMENT_CHOICES = [
@@ -28,4 +26,13 @@ class CheckoutForm(forms.ModelForm):
             'address': 'Địa chỉ giao hàng',
             'city': 'Thành phố',
             'postal_code': 'Mã bưu điện',
+        }
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ['rating','comment']
+        widgets = {
+            'rating': forms.RadioSelect,
+            'comment': forms.Textarea(attrs={'rows':3,'placeholder':'Viết nhận xét…'}),
         }
