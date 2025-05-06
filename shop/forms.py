@@ -4,7 +4,7 @@ from .models import Product, Order, Review
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['category', 'name', 'description', 'price', 'image', 'stock']
+        fields = ['brand','category', 'name', 'description', 'price', 'image', 'stock']
 
 class CheckoutForm(forms.ModelForm):
     PAYMENT_CHOICES = [

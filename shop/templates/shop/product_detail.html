@@ -3,26 +3,38 @@
 
 {% block extra_css %}
 <style>
-  /* =========== Tăng/giảm quantity =========== */
+  /* ========== Tăng/giảm số lượng ========== */
   #decBtn, #incBtn { cursor: pointer; }
 
-  /* =========== Đánh giá sao =========== */
+  /* ========== Hiển thị sao trung bình & review ========== */
+  .star-display i {
+    color: #ffc107;
+    margin-right: 2px;
+  }
+
+  /* ========== Form đánh giá sao ========== */
   .rating-input {
-    direction: rtl;
-    unicode-bidi: bidi-override;
+    display: inline-flex;
+    flex-direction: row-reverse;  /* đảo ngược DOM để CSS sibling ~ chọn đúng từ trái qua */
     font-size: 1.5rem;
-    display: inline-block;
   }
-  .rating-input input { display: none; }
+  .rating-input input {
+    display: none;                /* ẩn radio gốc */
+  }
   .rating-input label.star {
-    color: #e4e5e9;
+    color: #e4e5e9;               /* xám mặc định */
     cursor: pointer;
-    transition: color 0.2s;
     padding: 0 4px;
+    transition: color 0.2s;
   }
+  /* Hover: tô sao đang hover và các sao bên trái nó */
   .rating-input label.star:hover,
-  .rating-input label.star:hover ~ label.star,
-  .rating-input input:checked ~ label.star {
+  .rating-input label.star:hover ~ label.star {
+    color: #ffc107;
+  }
+  /* Checked: tô sao được chọn và các sao bên trái nó */
+  .rating-input input:checked + label.star,
+  .rating-input input:checked + label.star ~ label.star {
     color: #ffc107;
   }
 </style>
@@ -31,56 +43,46 @@
 {% block content %}
 <div class="container my-5">
   <div class="card shadow-sm">
-    <!-- 1. Ảnh & thông tin cơ bản -->
+    <!-- 1. Ảnh & Thông tin sản phẩm -->
     <div class="row g-0">
       <div class="col-md-6">
         {% if product.image %}
-          <img src="{{ product.image.url }}"
-               class="img-fluid rounded-start p-3"
-               alt="{{ product.name }}">
+          <img src="{{ product.image.url }}" class="img-fluid p-3" alt="{{ product.name }}">
         {% else %}
           <img src="https://via.placeholder.com/600x600?text=No+Image"
-               class="img-fluid rounded-start p-3"
-               alt="No image">
+               class="img-fluid p-3" alt="No image">
         {% endif %}
       </div>
       <div class="col-md-6">
         <div class="card-body">
-          <h2 class="card-title fw-bold">{{ product.name }}</h2>
-          <p class="text-muted small mb-2">Danh mục: {{ product.category.name }}</p>
-          <h3 class="text-danger mb-3">{{ product.price_vnd }}</h3>
-          <p class="mb-4">{{ product.description }}</p>
+          <h2 class="fw-bold">{{ product.name }}</h2>
+          <p class="text-danger">{{ product.price_vnd }}</p>
+          <p class="text-muted">Còn <strong>{{ product.stock }}</strong> sản phẩm</p>
+          <p>{{ product.description }}</p>
 
-          <!-- Form thêm vào giỏ / mua ngay -->
           <form method="post" action="{% url 'cart' %}">
             {% csrf_token %}
             <input type="hidden" name="product_id" value="{{ product.id }}">
-            <div class="d-flex align-items-center mb-4">
-              <label class="me-3 mb-0">Số lượng:</label>
-              <div class="input-group">
-                <button type="button" class="btn btn-outline-secondary" id="decBtn">−</button>
-                <input type="number"
-                       name="quantity"
-                       value="1"
-                       min="1"
-                       max="{{ product.stock }}"
-                       class="form-control text-center"
-                       id="qtyInput"
-                       style="max-width: 60px;">
-                <button type="button" class="btn btn-outline-secondary" id="incBtn">+</button>
-              </div>
+            <div class="input-group mb-3" style="max-width:120px;">
+              <button type="button" class="btn btn-outline-secondary" id="decBtn">−</button>
+              <input type="number" name="quantity" value="1"
+                     min="1" max="{{ product.stock }}"
+                     class="form-control text-center"
+                     id="qtyInput">
+              <button type="button" class="btn btn-outline-secondary" id="incBtn">+</button>
             </div>
-            <div class="d-flex gap-2">
-              <button type="submit" class="btn btn-success flex-fill">
-                <i class="bi bi-cart-plus"></i> Thêm vào giỏ
-              </button>
-              <a href="{% url 'checkout' %}" class="btn btn-primary flex-fill">
-                Mua ngay
-              </a>
-            </div>
+            <button class="btn btn-success">Thêm vào giỏ</button>
+            <a href="{% url 'checkout' %}" class="btn btn-primary ms-2">Mua ngay</a>
           </form>
 
-          <a href="{% url 'home' %}" class="btn btn-link mt-3">← Quay lại danh sách</a>
+          <a href="{% url 'home' %}"
+          class="btn btn-outline-secondary btn-sm text-decoration-none d-inline-flex align-items-center gap-1"
+          title="Quay lại trang trước"
+          role="button">
+         <i class="bi bi-arrow-left"></i>
+         <span>Quay lại</span>
+       </a>       
+          </a>
         </div>
       </div>
     </div>
@@ -88,38 +90,32 @@
     <hr/>
 
     <!-- 2. Điểm trung bình -->
-    {% with n=product.avg_rating_int %}
-      {% with stars="★★★★★"|slice:":n" %}
-        <div class="card-body">
-          <strong>Điểm trung bình:</strong>
-          <span class="text-warning">
-            {% for _ in stars %}
-              <i class="bi bi-star-fill"></i>
-            {% endfor %}
-          </span>
-          <small>({{ product.avg_rating|floatformat:"1" }})</small>
-        </div>
-      {% endwith %}
-    {% endwith %}
+    <div class="card-body">
+      <strong>Điểm đánh giá:</strong>
+      <span class="star-display">
+        {% for _ in avg_stars %}
+          <i class="bi bi-star-fill"></i>
+        {% endfor %}
+      </span>
+      <small>({{ product.avg_rating|floatformat:"1" }})</small>
+    </div>
 
     <hr/>
 
     <!-- 3. Danh sách review -->
     <div class="card-body">
-      <h3 class="mb-4">Đánh giá & nhận xét</h3>
+      <h3>Đánh giá & Nhận xét</h3>
       {% for rev in reviews %}
-        {% with stars="★★★★★"|slice:":rev.rating" %}
-          <div class="mb-3 p-3 border rounded">
-            <strong>{{ rev.user.username }}</strong>
-            <span class="text-warning">
-              {% for _ in stars %}
-                <i class="bi bi-star-fill"></i>
-              {% endfor %}
-            </span>
-            <small class="text-muted">({{ rev.created_at|date:"Y-m-d H:i" }})</small>
-            <p class="mt-2">{{ rev.comment }}</p>
-          </div>
-        {% endwith %}
+        <div class="border rounded p-3 mb-3">
+          <strong>{{ rev.user.username }}</strong>
+          <span class="star-display">
+            {% for _ in rev.stars %}
+              <i class="bi bi-star-fill"></i>
+            {% endfor %}
+          </span>
+          <small>({{ rev.created_at|date:"Y-m-d H:i" }})</small>
+          <p class="mt-2">{{ rev.comment }}</p>
+        </div>
       {% empty %}
         <p>Chưa có đánh giá nào.</p>
       {% endfor %}
@@ -131,16 +127,15 @@
           {{ review_form.non_field_errors }}
 
           <div class="mb-3">
-            <label>Chọn số sao:</label>
+            <label>Chọn sao:</label><br>
             <div class="rating-input">
-              {% for value,label in review_form.fields.rating.choices %}
-                <input
-                  type="radio"
-                  name="rating"
-                  id="star{{ value }}"
-                  value="{{ value }}"
-                  {% if review_form.rating.value|stringformat:"s" == value|stringformat:"s" %}checked{% endif %}>
-                <label for="star{{ value }}" class="star">
+              {% for val in '54321' %}
+                <input type="radio"
+                       name="rating"
+                       id="star{{ val }}"
+                       value="{{ val }}"
+                       {% if review_form.rating.value|stringformat:"s" == val|stringformat:"s" %}checked{% endif %}>
+                <label class="star" for="star{{ val }}">
                   <i class="bi bi-star-fill"></i>
                 </label>
               {% endfor %}
@@ -149,7 +144,7 @@
           </div>
 
           <div class="mb-3">
-            <label>Nhận xét:</label><br>
+            {{ review_form.comment.label_tag }}<br>
             {{ review_form.comment }}<br>
             {{ review_form.comment.errors }}
           </div>
@@ -168,17 +163,12 @@
 
 {% block extra_js %}
 <script>
-  // JS tăng/giảm số lượng
+  // Tăng/giảm số lượng
   const decBtn = document.getElementById('decBtn'),
         incBtn = document.getElementById('incBtn'),
-        qtyInput = document.getElementById('qtyInput');
-  decBtn.addEventListener('click', () => {
-    let v = parseInt(qtyInput.value)||1;
-    if (v>1) qtyInput.value = v-1;
-  });
-  incBtn.addEventListener('click', () => {
-    let v = parseInt(qtyInput.value)||1;
-    if (v<{{ product.stock }}) qtyInput.value = v+1;
-  });
+        qtyInp = document.getElementById('qtyInput');
+
+  decBtn.addEventListener('click', () => { if(qtyInp.value>1) qtyInp.value--; });
+  incBtn.addEventListener('click', () => { if(qtyInp.value<{{ product.stock }}) qtyInp.value++; });
 </script>
 {% endblock %}

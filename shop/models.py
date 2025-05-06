@@ -1,3 +1,4 @@
+# -*- shop/models.py-*-
 from django.db import models
 from django.utils.text import slugify
 from django.conf import settings
@@ -6,13 +7,18 @@ from django.db.models import Avg
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(unique=True, blank=True)
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+
     def __str__(self):
         return self.name
+
+
 class Product(models.Model):
+    brand = models.CharField("Thương hiệu", max_length=100, blank=True)
     category    = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
     name        = models.CharField(max_length=255)
     slug        = models.SlugField(unique=True, blank=True)
@@ -42,11 +48,14 @@ class Product(models.Model):
         return avg or 0.0
 
     @property
-    def avg_rating_int(self):
-        # Lấy phần nguyên (floor) của avg_rating
-        return int(self.avg_rating or 0)
+    def avg_stars(self):
+        # trả về range cho template lặp
+        return range(int(self.avg_rating))
+
+
 class Review(models.Model):
-    RATING_CHOICES = [(i, f"{i} sao") for i in range(1,5)]
+    RATING_CHOICES = [(i, f"{i} sao") for i in range(1, 6)]  # 1..5
+
     product    = models.ForeignKey(Product, related_name='reviews', on_delete=models.CASCADE)
     user       = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     rating     = models.PositiveSmallIntegerField(choices=RATING_CHOICES)
@@ -55,8 +64,15 @@ class Review(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+
     def __str__(self):
         return f"{self.user.username} đánh giá {self.product.name}"
+
+    @property
+    def stars(self):
+        # trả về range để template hiển thị đúng số sao
+        return range(self.rating)
+
 
 class Order(models.Model):
     user        = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -98,11 +114,8 @@ class Order(models.Model):
 
     @property
     def total_cost_vnd(self):
-        try:
-            amount = int(self.total_cost)
-        except (ValueError, TypeError):
-            return str(self.total_cost)
-        s = f"{amount:,}".replace(",", ".")
+        amt = int(self.total_cost)
+        s = f"{amt:,}".replace(",", ".")
         return f"{s} VND"
 
 
@@ -121,18 +134,12 @@ class OrderItem(models.Model):
 
     @property
     def cost_vnd(self):
-        try:
-            amount = int(self.cost)
-        except (ValueError, TypeError):
-            return str(self.cost)
-        s = f"{amount:,}".replace(",", ".")
+        amt = int(self.cost)
+        s = f"{amt:,}".replace(",", ".")
         return f"{s} VND"
 
     @property
     def price_vnd(self):
-        try:
-            amount = int(self.price)
-        except (ValueError, TypeError):
-            return str(self.price)
-        s = f"{amount:,}".replace(",", ".")
+        amt = int(self.price)
+        s = f"{amt:,}".replace(",", ".")
         return f"{s} VND"

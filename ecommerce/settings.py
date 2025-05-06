@@ -112,3 +112,8 @@ LOGIN_REDIRECT_URL = '/products/'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'login'         
 LOGIN_REDIRECT_URL = '/admin/products/'
+# settings.py
+import os
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

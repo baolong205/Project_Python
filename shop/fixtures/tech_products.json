@@ -1,374 +1,748 @@
 [
-    {
-      "model": "shop.category",
-      "pk": 1,
-      "fields": {
-        "name": "Laptop",
-        "slug": "laptop"
-      }
-    },
-    {
-      "model": "shop.category",
-      "pk": 2,
-      "fields": {
-        "name": "Điện thoại",
-        "slug": "dien-thoai"
-      }
-    },
-    {
-      "model": "shop.category",
-      "pk": 3,
-      "fields": {
-        "name": "Máy tính bảng",
-        "slug": "may-tinh-bang"
-      }
-    },
-    {
-      "model": "shop.category",
-      "pk": 4,
-      "fields": {
-        "name": "Phụ kiện",
-        "slug": "phu-kien"
-      }
-    },
-    {
-      "model": "shop.category",
-      "pk": 5,
-      "fields": {
-        "name": "Âm thanh",
-        "slug": "am-thanh"
-      }
-    },
-  
-    {
-      "model": "shop.product",
-      "pk": 1,
-      "fields": {
-        "created_at": "2025-04-18T07:00:00Z",
-        "category": 1,
-        "name": "MacBook Pro 14 M2 Pro",
-        "slug": "macbook-pro-14-m2-pro",
-        "description": "MacBook Pro 14-inch với chip M2 Pro, 16GB RAM, 512GB SSD.",
-        "price": "49990000.00",
-        "stock": 20,
-        "rating": 4.8,
-        "image": "products/macbook_pro_14_m2_pro.jpg"
-      }
-    },
-    {
-      "model": "shop.product",
-      "pk": 2,
-      "fields": {
-        "created_at": "2025-04-18T07:00:00Z",
-        "category": 1,
-        "name": "Dell XPS 13",
-        "slug": "dell-xps-13",
-        "description": "Dell XPS 13, Intel i7, 16GB RAM, 512GB SSD.",
-        "price": "31990000.00",
-        "stock": 15,
-        "rating": 4.5,
-        "image": "products/dell_xps_13.jpg"
-      }
-    },
-    {
-      "model": "shop.product",
-      "pk": 3,
-      "fields": {
-        "created_at": "2025-04-18T07:00:00Z",
-        "category": 2,
-        "name": "iPhone 14 Pro",
-        "slug": "iphone-14-pro",
-        "description": "iPhone 14 Pro, 128GB, màu Midnight.",
-        "price": "28990000.00",
-        "stock": 30,
-        "rating": 4.7,
-        "image": "products/iphone_14_pro.jpg"
-      }
-    },
-    {
-      "model": "shop.product",
-      "pk": 4,
-      "fields": {
-        "created_at": "2025-04-18T07:00:00Z",
-        "category": 2,
-        "name": "Samsung Galaxy S23",
-        "slug": "samsung-galaxy-s23",
-        "description": "Samsung Galaxy S23, 128GB, màu Phantom Black.",
-        "price": "20990000.00",
-        "stock": 25,
-        "rating": 4.6,
-        "image": "products/samsung_galaxy_s23.jpg"
-      }
-    },
-    {
-      "model": "shop.product",
-      "pk": 5,
-      "fields": {
-        "created_at": "2025-04-18T07:00:00Z",
-        "category": 3,
-        "name": "iPad Air 5",
-        "slug": "ipad-air-5",
-        "description": "iPad Air 5 (2022), chip M1, 64GB.",
-        "price": "14990000.00",
-        "stock": 18,
-        "rating": 4.4,
-        "image": "products/ipad_air_5.jpg"
-      }
-    },
-    {
-      "model": "shop.product",
-      "pk": 6,
-      "fields": {
-        "created_at": "2025-04-18T07:00:00Z",
-        "category": 4,
-        "name": "AirPods Pro (Gen 2)",
-        "slug": "airpods-pro-gen-2",
-        "description": "Tai nghe không dây AirPods Pro thế hệ 2.",
-        "price": "5990000.00",
-        "stock": 50,
-        "rating": 4.9,
-        "image": "products/airpods_pro_gen2.jpg"
-      }
-    },
-    {
-      "model": "shop.product",
-      "pk": 7,
-      "fields": {
-        "created_at": "2025-04-18T07:00:00Z",
-        "category": 5,
-        "name": "Loa JBL Charge 5",
-        "slug": "loa-jbl-charge-5",
-        "description": "Loa bluetooth JBL Charge 5, chống nước IP67.",
-        "price": "3799000.00",
-        "stock": 22,
-        "rating": 4.3,
-        "image": "products/loa_jbl_charge_5.jpg"
-      }
-    },
-      {
-        "model": "shop.product",
-        "pk": 8,
-        "fields": {
-          "created_at": "2025-04-18T07:00:00Z",
-          "category": 1,
-          "name": "HP Spectre x360 14",
-          "slug": "hp-spectre-x360-14",
-          "description": "HP Spectre x360 14-inch, Intel i7, 16GB RAM, 512GB SSD.",
-          "price": "35000000.00",
-          "stock": 10,
-          "rating": 4.6,
-          "image": "products/hp_spectre_x360_14.jpg"
-        }
-      },
-      {
-        "model": "shop.product",
-        "pk": 9,
-        "fields": {
-          "created_at": "2025-04-18T07:00:00Z",
-          "category": 1,
-          "name": "Lenovo ThinkPad X1 Carbon",
-          "slug": "lenovo-thinkpad-x1-carbon",
-          "description": "Lenovo ThinkPad X1 Carbon, 14-inch, Intel i7, 16GB RAM, 512GB SSD.",
-          "price": "38000000.00",
-          "stock": 12,
-          "rating": 4.7,
-          "image": "products/lenovo_thinkpad_x1_carbon.jpg"
-        }
-      },
-      {
-        "model": "shop.product",
-        "pk": 10,
-        "fields": {
-          "created_at": "2025-04-18T07:00:00Z",
-          "category": 1,
-          "name": "Asus ROG Zephyrus G14",
-          "slug": "asus-rog-zephyrus-g14",
-          "description": "Asus ROG Zephyrus G14, 14-inch, AMD Ryzen 9, 16GB RAM, 1TB SSD, RTX 3060.",
-          "price": "45000000.00",
-          "stock": 8,
-          "rating": 4.8,
-          "image": "products/asus_rog_zephyrus_g14.jpg"
-        }
-      },
-      {
-        "model": "shop.product",
-        "pk": 11,
-        "fields": {
-          "created_at": "2025-04-18T07:00:00Z",
-          "category": 2,
-          "name": "Google Pixel 7",
-          "slug": "google-pixel-7",
-          "description": "Google Pixel 7, 128GB, màu Sorta Seafoam.",
-          "price": "15000000.00",
-          "stock": 20,
-          "rating": 4.5,
-          "image": "products/google_pixel_7.jpg"
-        }
-      },
-      {
-        "model": "shop.product",
-        "pk": 12,
-        "fields": {
-          "created_at": "2025-04-18T07:00:00Z",
-          "category": 2,
-          "name": "OnePlus 10 Pro",
-          "slug": "oneplus-10-pro",
-          "description": "OnePlus 10 Pro, 256GB, màu Volcanic Black.",
-          "price": "22000000.00",
-          "stock": 15,
-          "rating": 4.6,
-          "image": "products/oneplus_10_pro.jpg"
-        }
-      },
-      {
-        "model": "shop.product",
-        "pk": 13,
-        "fields": {
-          "created_at": "2025-04-18T07:00:00Z",
-          "category": 2,
-          "name": "Xiaomi Mi 12",
-          "slug": "xiaomi-mi-12",
-          "description": "Xiaomi Mi 12, 256GB, màu Blue.",
-          "price": "18000000.00",
-          "stock": 18,
-          "rating": 4.4,
-          "image": "products/xiaomi_mi_12.jpg"
-        }
-      },
-      {
-        "model": "shop.product",
-        "pk": 14,
-        "fields": {
-          "created_at": "2025-04-18T07:00:00Z",
-          "category": 3,
-          "name": "Samsung Galaxy Tab S8",
-          "slug": "samsung-galaxy-tab-s8",
-          "description": "Samsung Galaxy Tab S8, 128GB, kèm S Pen.",
-          "price": "20000000.00",
-          "stock": 10,
-          "rating": 4.7,
-          "image": "products/samsung_galaxy_tab_s8.jpg"
-        }
-      },
-      {
-        "model": "shop.product",
-        "pk": 15,
-        "fields": {
-          "created_at": "2025-04-18T07:00:00Z",
-          "category": 3,
-          "name": "Lenovo Tab P11 Pro",
-          "slug": "lenovo-tab-p11-pro",
-          "description": "Lenovo Tab P11 Pro, 128GB, màn hình OLED.",
-          "price": "12000000.00",
-          "stock": 15,
-          "rating": 4.3,
-          "image": "products/lenovo_tab_p11_pro.jpg"
-        }
-      },
-      {
-        "model": "shop.product",
-        "pk": 16,
-        "fields": {
-          "created_at": "2025-04-18T07:00:00Z",
-          "category": 4,
-          "name": "Spigen Clear Case cho iPhone 14 Pro",
-          "slug": "spigen-clear-case-iphone-14-pro",
-          "description": "Ốp lưng trong suốt cho iPhone 14 Pro bởi Spigen.",
-          "price": "500000.00",
-          "stock": 50,
-          "rating": 4.2,
-          "image": "products/spigen_clear_case_iphone_14_pro.jpg"
-        }
-      },
-      {
-        "model": "shop.product",
-        "pk": 17,
-        "fields": {
-          "created_at": "2025-04-18T07:00:00Z",
-          "category": 4,
-          "name": "Sạc nhanh Samsung 25W",
-          "slug": "samsung-25w-fast-charger",
-          "description": "Sạc nhanh 25W cho các thiết bị Samsung.",
-          "price": "300000.00",
-          "stock": 100,
-          "rating": 4.0,
-          "image": "products/samsung_25w_fast_charger.jpg"
-        }
-      },
-      {
-        "model": "shop.product",
-        "pk": 18,
-        "fields": {
-          "created_at": "2025-04-18T07:00:00Z",
-          "category": 4,
-          "name": "Cáp USB-C to Lightning 1m",
-          "slug": "usb-c-to-lightning-cable-1m",
-          "description": "Cáp USB-C sang Lightning dài 1m cho thiết bị Apple.",
-          "price": "200000.00",
-          "stock": 200,
-          "rating": 4.1,
-          "image": "products/usb_c_to_lightning_cable_1m.jpg"
-        }
-      },
-      {
-        "model": "shop.product",
-        "pk": 19,
-        "fields": {
-          "created_at": "2025-04-18T07:00:00Z",
-          "category": 4,
-          "name": "Kính cường lực cho iPad Air 5",
-          "slug": "tempered-glass-screen-protector-ipad-air-5",
-          "description": "Kính cường lực bảo vệ màn hình cho iPad Air 5.",
-          "price": "250000.00",
-          "stock": 50,
-          "rating": 4.3,
-          "image": "products/tempered_glass_screen_protector_ipad_air_5.jpg"
-        }
-      },
-      {
-        "model": "shop.product",
-        "pk": 20,
-        "fields": {
-          "created_at": "2025-04-18T07:00:00Z",
-          "category": 5,
-          "name": "Bose QuietComfort 45",
-          "slug": "bose-quietcomfort-45",
-          "description": "Tai nghe chống ồn Bose QuietComfort 45.",
-          "price": "8000000.00",
-          "stock": 15,
-          "rating": 4.8,
-          "image": "products/bose_quietcomfort_45.jpg"
-        }
-      },
-      {
-        "model": "shop.product",
-        "pk": 21,
-        "fields": {
-          "created_at": "2025-04-18T07:00:00Z",
-          "category": 5,
-          "name": "Sony WH-1000XM5",
-          "slug": "sony-wh-1000xm5",
-          "description": "Tai nghe chống ồn Sony WH-1000XM5.",
-          "price": "9000000.00",
-          "stock": 12,
-          "rating": 4.9,
-          "image": "products/sony_wh_1000xm5.jpg"
-        }
-      },
-      {
-        "model": "shop.product",
-        "pk": 22,
-        "fields": {
-          "created_at": "2025-04-18T07:00:00Z",
-          "category": 5,
-          "name": "Sonos Beam",
-          "slug": "sonos-beam",
-          "description": "Loa soundbar Sonos Beam tích hợp Alexa.",
-          "price": "10000000.00",
-          "stock": 10,
-          "rating": 4.7,
-          "image": "products/sonos_beam.jpg"
-        }
-      }
-  ]
-  
+  {
+    "model": "shop.category",
+    "pk": 1,
+    "fields": {
+      "name": "Laptop",
+      "slug": "laptop"
+    }
+  },
+  {
+    "model": "shop.category",
+    "pk": 2,
+    "fields": {
+      "name": "Điện thoại",
+      "slug": "dien-thoai"
+    }
+  },
+  {
+    "model": "shop.category",
+    "pk": 3,
+    "fields": {
+      "name": "Máy tính bảng",
+      "slug": "may-tinh-bang"
+    }
+  },
+  {
+    "model": "shop.category",
+    "pk": 4,
+    "fields": {
+      "name": "Phụ kiện",
+      "slug": "phu-kien"
+    }
+  },
+  {
+    "model": "shop.category",
+    "pk": 5,
+    "fields": {
+      "name": "Âm thanh",
+      "slug": "am-thanh"
+    }
+  },
+
+  {
+    "model": "shop.product",
+    "pk": 1,
+    "fields": {
+      "created_at": "2025-04-18T07:00:00Z",
+      "category": 1,
+      "name": "MacBook Pro 14 M2 Pro",
+      "slug": "macbook-pro-14-m2-pro",
+      "description": "MacBook Pro 14-inch với chip M2 Pro, 16GB RAM, 512GB SSD.",
+      "price": "49990000.00",
+      "stock": 20,
+      "image": "products/macbook_pro_14_m2_pro.jpg",
+      "brand": "Apple"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 2,
+    "fields": {
+      "created_at": "2025-04-18T07:00:00Z",
+      "category": 1,
+      "name": "Dell XPS 13",
+      "slug": "dell-xps-13",
+      "description": "Dell XPS 13, Intel i7, 16GB RAM, 512GB SSD.",
+      "price": "31990000.00",
+      "stock": 15,
+      "image": "products/dell_xps_13.jpg",
+      "brand": "Dell"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 3,
+    "fields": {
+      "created_at": "2025-04-18T07:00:00Z",
+      "category": 2,
+      "name": "iPhone 14 Pro",
+      "slug": "iphone-14-pro",
+      "description": "iPhone 14 Pro, 128GB, màu Midnight.",
+      "price": "28990000.00",
+      "stock": 30,
+      "image": "products/iphone_14_pro.jpg",
+      "brand": "Apple"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 4,
+    "fields": {
+      "created_at": "2025-04-18T07:00:00Z",
+      "category": 2,
+      "name": "Samsung Galaxy S23",
+      "slug": "samsung-galaxy-s23",
+      "description": "Samsung Galaxy S23, 128GB, màu Phantom Black.",
+      "price": "20990000.00",
+      "stock": 25,
+      "image": "products/samsung_galaxy_s23.jpg",
+      "brand": "Samsung"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 6,
+    "fields": {
+      "created_at": "2025-04-18T07:00:00Z",
+      "category": 4,
+      "name": "AirPods Pro (Gen 2)",
+      "slug": "airpods-pro-gen-2",
+      "description": "Tai nghe không dây AirPods Pro thế hệ 2.",
+      "price": "5990000.00",
+      "stock": 50,
+      "image": "products/airpods_pro_gen2.jpg",
+      "brand": "Apple"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 7,
+    "fields": {
+      "created_at": "2025-04-18T07:00:00Z",
+      "category": 5,
+      "name": "Loa JBL Charge 5",
+      "slug": "loa-jbl-charge-5",
+      "description": "Loa bluetooth JBL Charge 5, chống nước IP67.",
+      "price": "3799000.00",
+      "stock": 22,
+      "image": "products/loa_jbl_charge_5.jpg",
+      "brand": "JBL"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 8,
+    "fields": {
+      "created_at": "2025-04-18T07:00:00Z",
+      "category": 1,
+      "name": "HP Spectre x360 14",
+      "slug": "hp-spectre-x360-14",
+      "description": "HP Spectre x360 14-inch, Intel i7, 16GB RAM, 512GB SSD.",
+      "price": "35000000.00",
+      "stock": 10,
+      "image": "products/hp_spectre_x360_14.jpg",
+      "brand": "HP"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 9,
+    "fields": {
+      "created_at": "2025-04-18T07:00:00Z",
+      "category": 1,
+      "name": "Lenovo ThinkPad X1 Carbon",
+      "slug": "lenovo-thinkpad-x1-carbon",
+      "description": "Lenovo ThinkPad X1 Carbon, 14-inch, Intel i7, 16GB RAM, 512GB SSD.",
+      "price": "38000000.00",
+      "stock": 12,
+      "image": "products/lenovo_thinkpad_x1_carbon.jpg",
+      "brand": "Lenovo"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 10,
+    "fields": {
+      "created_at": "2025-04-18T07:00:00Z",
+      "category": 1,
+      "name": "Asus ROG Zephyrus G14",
+      "slug": "asus-rog-zephyrus-g14",
+      "description": "Asus ROG Zephyrus G14, 14-inch, AMD Ryzen 9, 16GB RAM, 1TB SSD, RTX 3060.",
+      "price": "45000000.00",
+      "stock": 8,
+      "image": "products/asus_rog_zephyrus_g14.jpg",
+      "brand": "Asus"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 11,
+    "fields": {
+      "created_at": "2025-04-18T07:00:00Z",
+      "category": 2,
+      "name": "Google Pixel 7",
+      "slug": "google-pixel-7",
+      "description": "Google Pixel 7, 128GB, màu Sorta Seafoam.",
+      "price": "15000000.00",
+      "stock": 20,
+      "image": "products/google_pixel_7.jpg",
+      "brand": "Google"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 14,
+    "fields": {
+      "created_at": "2025-04-18T07:00:00Z",
+      "category": 3,
+      "name": "Samsung Galaxy Tab S8",
+      "slug": "samsung-galaxy-tab-s8",
+      "description": "Samsung Galaxy Tab S8, 128GB, kèm S Pen.",
+      "price": "20000000.00",
+      "stock": 10,
+      "image": "products/samsung_galaxy_tab_s8.jpg",
+      "brand": "Samsung"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 15,
+    "fields": {
+      "created_at": "2025-04-18T07:00:00Z",
+      "category": 3,
+      "name": "Lenovo Tab P11 Pro",
+      "slug": "lenovo-tab-p11-pro",
+      "description": "Lenovo Tab P11 Pro, 128GB, màn hình OLED.",
+      "price": "12000000.00",
+      "stock": 15,
+      "image": "products/lenovo_tab_p11_pro.jpg",
+      "brand": "Lenovo"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 17,
+    "fields": {
+      "created_at": "2025-04-18T07:00:00Z",
+      "category": 4,
+      "name": "Sạc nhanh Samsung 25W",
+      "slug": "samsung-25w-fast-charger",
+      "description": "Sạc nhanh 25W cho các thiết bị Samsung.",
+      "price": "300000.00",
+      "stock": 100,
+      "image": "products/samsung_25w_fast_charger.jpg",
+      "brand": "Samsung"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 18,
+    "fields": {
+      "created_at": "2025-04-18T07:00:00Z",
+      "category": 4,
+      "name": "Cáp USB-C to Lightning 1m",
+      "slug": "usb-c-to-lightning-cable-1m",
+      "description": "Cáp USB-C sang Lightning dài 1m cho thiết bị Apple.",
+      "price": "200000.00",
+      "stock": 200,
+      "image": "products/usb_c_to_lightning_cable_1m.jpg",
+      "brand": "Apple"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 19,
+    "fields": {
+      "created_at": "2025-04-18T07:00:00Z",
+      "category": 4,
+      "name": "Kính cường lực cho iPad Air 5",
+      "slug": "tempered-glass-screen-protector-ipad-air-5",
+      "description": "Kính cường lực bảo vệ màn hình cho iPad Air 5.",
+      "price": "250000.00",
+      "stock": 50,
+      "image": "products/tempered_glass_screen_protector_ipad_air_5.jpg",
+      "brand": "Generic"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 20,
+    "fields": {
+      "created_at": "2025-04-18T07:00:00Z",
+      "category": 5,
+      "name": "Bose QuietComfort 45",
+      "slug": "bose-quietcomfort-45",
+      "description": "Tai nghe chống ồn Bose QuietComfort 45.",
+      "price": "8000000.00",
+      "stock": 15,
+      "image": "products/bose_quietcomfort_45.jpg",
+      "brand": "Bose"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 23,
+    "fields": {
+      "created_at": "2025-04-18T07:00:00Z",
+      "category": 1,
+      "name": "Acer Predator Helios 300",
+      "slug": "acer-predator-helios-300",
+      "description": "Acer Predator Helios 300, 15.6-inch, Intel i7, 16GB RAM, 512GB SSD, RTX 3070.",
+      "price": "42000000.00",
+      "stock": 10,
+      "image": "products/acer_predator_helios_300.jpg",
+      "brand": "Acer"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 25,
+    "fields": {
+      "created_at": "2025-04-18T07:00:00Z",
+      "category": 4,
+      "name": "Anker PowerCore 10000",
+      "slug": "anker-powercore-10000",
+      "description": "Pin dự phòng Anker PowerCore 10000mAh, sạc nhanh.",
+      "price": "600000.00",
+      "stock": 80,
+      "image": "products/anker_powercore_10000.jpg",
+      "brand": "Anker"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 26,
+    "fields": {
+      "created_at": "2025-05-02T08:00:00Z",
+      "category": 1,
+      "name": "Acer Nitro 5 AN515-55",
+      "slug": "acer-nitro-5-an515-55",
+      "description": "Acer Nitro 5 AN515-55, Intel Core i5-10300H, 8GB RAM, 512GB SSD, GTX 1650.",
+      "price": "18999000.00",
+      "stock": 20,
+      "image": "products/acer_nitro_5_an515_55.jpg",
+      "brand": "Acer"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 27,
+    "fields": {
+      "created_at": "2025-05-02T08:10:00Z",
+      "category": 1,
+      "name": "Acer Predator Helios 300 PH315-53",
+      "slug": "acer-predator-helios-300-ph315-53",
+      "description": "Acer Predator Helios 300 PH315-53, Intel Core i7-10750H, 16GB RAM, 512GB SSD, RTX 2060.",
+      "price": "29999000.00",
+      "stock": 8,
+      "image": "products/acer_predator_helios_300_ph315_53.jpg",
+      "brand": "Acer"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 28,
+    "fields": {
+      "created_at": "2025-05-02T08:15:00Z",
+      "category": 1,
+      "name": "Acer Aspire 5 A515-56",
+      "slug": "acer-aspire-5-a515-56",
+      "description": "Acer Aspire 5 A515-56, Intel Core i5-1135G7, 8GB RAM, 512GB SSD, màn hình IPS Full HD.",
+      "price": "16999000.00",
+      "stock": 25,
+      "image": "products/acer_aspire_5_a515_56.jpg",
+      "brand": "Acer"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 29,
+    "fields": {
+      "created_at": "2025-05-02T09:00:00Z",
+      "category": 4,
+      "name": "Anker PowerCore 20000",
+      "slug": "anker-powercore-20000",
+      "description": "Pin dự phòng Anker PowerCore 20000mAh, hỗ trợ sạc nhanh PowerIQ, hai cổng USB.",
+      "price": "800000.00",
+      "stock": 50,
+      "image": "products/anker_powercore_20000.jpg",
+      "brand": "Anker"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 30,
+    "fields": {
+      "created_at": "2025-05-02T09:05:00Z",
+      "category": 4,
+      "name": "Anker Soundcore Life Q20",
+      "slug": "anker-soundcore-life-q20",
+      "description": "Tai nghe chụp tai Anker Soundcore Life Q20, chống ồn chủ động ANC, pin 40 giờ.",
+      "price": "1200000.00",
+      "stock": 30,
+      "image": "products/anker_soundcore_life_q20.jpg",
+      "brand": "Anker"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 31,
+    "fields": {
+      "created_at": "2025-05-02T09:10:00Z",
+      "category": 4,
+      "name": "Anker Soundcore Liberty Air 2",
+      "slug": "anker-soundcore-liberty-air-2",
+      "description": "Tai nghe True Wireless Anker Soundcore Liberty Air 2, Bluetooth 5.0, pin 28 giờ.",
+      "price": "1500000.00",
+      "stock": 25,
+      "image": "products/anker_soundcore_liberty_air_2.jpg",
+      "brand": "Anker"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 32,
+    "fields": {
+      "created_at": "2025-05-03T11:00:00Z",
+      "category": 3,
+      "name": "Asus Transformer Pad TF103C",
+      "slug": "asus-transformer-pad-tf103c",
+      "description": "Asus Transformer Pad TF103C, bản 10.1” HD, Intel Atom x5, 2GB RAM, 32GB eMMC, có bàn phím rời.",
+      "price": "7990000.00",
+      "stock": 15,
+      "image": "products/asus_transformer_pad_tf103c.jpg",
+      "brand": "Asus"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 33,
+    "fields": {
+      "created_at": "2025-05-03T11:05:00Z",
+      "category": 3,
+      "name": "Asus ZenPad 8 Z380KNL",
+      "slug": "asus-zenpad-8-z380knl",
+      "description": "Asus ZenPad 8 Z380KNL, màn hình 8” Full HD, MediaTek MT8163, 3GB RAM, 16GB, camera 8MP.",
+      "price": "5990000.00",
+      "stock": 20,
+      "image": "products/asus_zenpad_8_z380knl.jpg",
+      "brand": "Asus"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 34,
+    "fields": {
+      "created_at": "2025-05-03T11:10:00Z",
+      "category": 3,
+      "name": "Asus ZenPad 10 Z301ML",
+      "slug": "asus-zenpad-10-z301ml",
+      "description": "Asus ZenPad 10 Z301ML, màn hình 10.1” Full HD, Intel Atom x3, 2GB RAM, 32GB eMMC.",
+      "price": "8990000.00",
+      "stock": 12,
+      "image": "products/asus_zenpad_10_z301ml.jpg",
+      "brand": "Asus"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 35,
+    "fields": {
+      "created_at": "2025-05-04T10:00:00Z",
+      "category": 5,
+      "name": "Bose QuietComfort Earbuds II",
+      "slug": "bose-quietcomfort-earbuds-ii",
+      "description": "Tai nghe True Wireless Bose QuietComfort Earbuds II với chống ồn chủ động, pin 6 giờ.",
+      "price": "6990000.00",
+      "stock": 30,
+      "image": "products/bose_quietcomfort_earbuds_ii.jpg",
+      "brand": "Bose"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 36,
+    "fields": {
+      "created_at": "2025-05-04T10:05:00Z",
+      "category": 5,
+      "name": "Bose SoundLink Revolve+ II",
+      "slug": "bose-soundlink-revolve-plus-ii",
+      "description": "Loa Bluetooth di động Bose SoundLink Revolve+ II với âm thanh 360°, chống nước IP55.",
+      "price": "4990000.00",
+      "stock": 18,
+      "image": "products/bose_soundlink_revolve_plus_ii.jpg",
+      "brand": "Bose"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 37,
+    "fields": {
+      "created_at": "2025-05-04T10:10:00Z",
+      "category": 5,
+      "name": "Bose Home Speaker 500",
+      "slug": "bose-home-speaker-500",
+      "description": "Loa thông minh Bose Home Speaker 500, tích hợp Alexa và Google Assistant, âm thanh stereo.",
+      "price": "8990000.00",
+      "stock": 12,
+      "image": "products/bose_home_speaker_500.jpg",
+      "brand": "Bose"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 38,
+    "fields": {
+      "created_at": "2025-05-04T11:00:00Z",
+      "category": 1,
+      "name": "Dell Inspiron 15 5515",
+      "slug": "dell-inspiron-15-5515",
+      "description": "Dell Inspiron 15 5515, AMD Ryzen 5 5500U, 8GB RAM, 512GB SSD, màn hình 15.6” FHD.",
+      "price": "15990000.00",
+      "stock": 25,
+      "image": "products/dell_inspiron_15_5515.jpg",
+      "brand": "Dell"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 39,
+    "fields": {
+      "created_at": "2025-05-04T11:05:00Z",
+      "category": 1,
+      "name": "Dell Latitude 7420",
+      "slug": "dell-latitude-7420",
+      "description": "Dell Latitude 7420, Intel Core i7-1185G7, 16GB RAM, 512GB SSD, màn hình 14” FHD.",
+      "price": "27990000.00",
+      "stock": 12,
+      "image": "products/dell_latitude_7420.jpg",
+      "brand": "Dell"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 40,
+    "fields": {
+      "created_at": "2025-05-04T11:10:00Z",
+      "category": 1,
+      "name": "Dell G15 5520",
+      "slug": "dell-g15-5520",
+      "description": "Dell G15 5520, Intel Core i5-12500H, 8GB RAM, 512GB SSD, GTX 1650 Ti, màn hình 15.6” 120Hz.",
+      "price": "23990000.00",
+      "stock": 18,
+      "image": "products/dell_g15_5520.jpg",
+      "brand": "Dell"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 41,
+    "fields": {
+      "created_at": "2025-05-04T11:15:00Z",
+      "category": 4,
+      "name": "Bàn di chuột Generic Comfort",
+      "slug": "generic-comfort-mousepad",
+      "description": "Bàn di chuột kích thước lớn, bề mặt vải mềm, lót cao su chống trượt.",
+      "price": "150000.00",
+      "stock": 100,
+      "image": "products/generic_comfort_mousepad.jpg",
+      "brand": "Generic"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 42,
+    "fields": {
+      "created_at": "2025-05-04T11:20:00Z",
+      "category": 4,
+      "name": "Cáp sạc USB-C Generic 2m",
+      "slug": "generic-usb-c-2m-cable",
+      "description": "Cáp sạc USB-C dài 2m, hỗ trợ PD, vỏ bện nylon bền bỉ.",
+      "price": "120000.00",
+      "stock": 150,
+      "image": "products/generic_usbc_2m_cable.jpg",
+      "brand": "Generic"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 43,
+    "fields": {
+      "created_at": "2025-05-04T11:25:00Z",
+      "category": 4,
+      "name": "Tai nghe on-ear Generic Basic",
+      "slug": "generic-basic-on-ear-headphones",
+      "description": "Tai nghe on-ear giá rẻ, băng đô điều chỉnh, đệm tai êm ái.",
+      "price": "300000.00",
+      "stock": 80,
+      "image": "products/generic_basic_headphones.jpg",
+      "brand": "Generic"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 44,
+    "fields": {
+      "created_at": "2025-05-04T12:00:00Z",
+      "category": 2,
+      "name": "Google Nest Hub",
+      "slug": "google-nest-hub",
+      "description": "Màn hình thông minh Google Nest Hub, điều khiển bằng giọng nói.",
+      "price": "2990000.00",
+      "stock": 40,
+      "image": "products/google_nest_hub.jpg",
+      "brand": "Google"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 45,
+    "fields": {
+      "created_at": "2025-05-04T12:05:00Z",
+      "category": 2,
+      "name": "Google Nest Mini",
+      "slug": "google-nest-mini",
+      "description": "Loa thông minh Google Nest Mini, âm thanh to rõ, hỗ trợ trợ lý ảo.",
+      "price": "599000.00",
+      "stock": 60,
+      "image": "products/google_nest_mini.jpg",
+      "brand": "Google"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 46,
+    "fields": {
+      "created_at": "2025-05-04T12:10:00Z",
+      "category": 2,
+      "name": "Google Pixel Buds A-Series",
+      "slug": "google-pixel-buds-a-series",
+      "description": "Tai nghe True Wireless Google Pixel Buds A-Series, kết nối Bluetooth.",
+      "price": "1999000.00",
+      "stock": 50,
+      "image": "products/google_pixel_buds_a_series.jpg",
+      "brand": "Google"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 47,
+    "fields": {
+      "created_at": "2025-05-04T12:15:00Z",
+      "category": 1,
+      "name": "HP Envy 13",
+      "slug": "hp-envy-13",
+      "description": "HP Envy 13, Intel i5, 8GB RAM, 256GB SSD, màn hình 13.3-inch Full HD.",
+      "price": "19990000.00",
+      "stock": 12,
+      "image": "products/hp_envy_13.jpg",
+      "brand": "HP"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 48,
+    "fields": {
+      "created_at": "2025-05-04T12:20:00Z",
+      "category": 1,
+      "name": "HP Pavilion 15",
+      "slug": "hp-pavilion-15",
+      "description": "HP Pavilion 15, Intel i7, 16GB RAM, 512GB SSD, màn hình 15.6-inch.",
+      "price": "23990000.00",
+      "stock": 15,
+      "image": "products/hp_pavilion_15.jpg",
+      "brand": "HP"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 49,
+    "fields": {
+      "created_at": "2025-05-04T12:25:00Z",
+      "category": 1,
+      "name": "HP Omen 16",
+      "slug": "hp-omen-16",
+      "description": "HP Omen 16, AMD Ryzen 7, RTX 3060, 16GB RAM, 1TB SSD.",
+      "price": "34990000.00",
+      "stock": 8,
+      "image": "products/hp_omen_16.jpg",
+      "brand": "HP"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 50,
+    "fields": {
+      "created_at": "2025-05-04T12:30:00Z",
+      "category": 5,
+      "name": "JBL Tune 230NC",
+      "slug": "jbl-tune-230nc",
+      "description": "Tai nghe true wireless JBL Tune 230NC, chống ồn chủ động, pin 40 giờ.",
+      "price": "2499000.00",
+      "stock": 30,
+      "image": "products/jbl_tune_230nc.jpg",
+      "brand": "JBL"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 51,
+    "fields": {
+      "created_at": "2025-05-04T12:35:00Z",
+      "category": 5,
+      "name": "JBL Flip 6",
+      "slug": "jbl-flip-6",
+      "description": "Loa bluetooth JBL Flip 6, chống nước IPX7, âm bass mạnh mẽ.",
+      "price": "3299000.00",
+      "stock": 25,
+      "image": "products/jbl_flip_6.jpg",
+      "brand": "JBL"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 52,
+    "fields": {
+      "created_at": "2025-05-04T12:40:00Z",
+      "category": 5,
+      "name": "JBL Charge 4",
+      "slug": "jbl-charge-4",
+      "description": "Loa bluetooth JBL Charge 4, pin 20 giờ, bluetooth 4.2.",
+      "price": "2799000.00",
+      "stock": 28,
+      "image": "products/jbl_charge_4.jpg",
+      "brand": "JBL"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 53,
+    "fields": {
+      "created_at": "2025-05-04T12:45:00Z",
+      "category": 1,
+      "name": "Lenovo IdeaPad 3",
+      "slug": "lenovo-ideapad-3",
+      "description": "Lenovo IdeaPad 3, AMD Ryzen 5, 8GB RAM, 256GB SSD.",
+      "price": "15990000.00",
+      "stock": 18,
+      "image": "products/lenovo_ideapad_3.jpg",
+      "brand": "Lenovo"
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 54,
+    "fields": {
+      "created_at": "2025-05-04T12:50:00Z",
+      "category": 1,
+      "name": "Lenovo Yoga Slim 7",
+      "slug": "lenovo-yoga-slim-7",
+      "description": "Lenovo Yoga Slim 7, Intel i5, 16GB RAM, 512GB SSD.",
+      "price": "21990000.00",
+      "stock": 10,
+      "image": "products/lenovo_yoga_slim_7.jpg",
+      "brand": "Lenovo"
+    }
+  }
+]

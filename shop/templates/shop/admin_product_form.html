@@ -1,30 +1,52 @@
+{# shop/templates/shop/admin_product_form.html #}
 {% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block extra_css %}
+<style>
+  .admin-form {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: .5rem;
+    box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+  }
+  .admin-form h1 {
+    margin-bottom: 1.5rem;
+  }
+  .admin-form .mb-3 label {
+    font-weight: 600;
+  }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="container my-5">
+<div class="container admin-form">
   {% if product %}
     <h1>Chỉnh sửa sản phẩm</h1>
-    {% comment %}Nếu bạn muốn set explicit action, uncomment dòng sau{% endcomment %}
-    {# <form method="post" enctype="multipart/form-data" action="{% url 'admin_product_update' product.pk %}"> #}
   {% else %}
     <h1>Thêm sản phẩm mới</h1>
-    {# <form method="post" enctype="multipart/form-data" action="{% url 'admin_product_create' %}"> #}
   {% endif %}
 
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <div class="mb-3">
-      {{ form.non_field_errors }}
-      {% for f in form %}
-        <div class="mb-2">
-          {{ f.label_tag }}<br>
-          {{ f }}
-          {{ f.errors }}
-        </div>
-      {% endfor %}
-    </div>
+    {{ form.non_field_errors }}
+
+    {% for f in form %}
+      <div class="mb-3">
+        {{ f.label_tag }}
+        {% if f.field.widget|add_class:"" and f.field.widget.input_type == "file" %}
+          {{ f|add_class:"form-control-file" }}
+        {% else %}
+          {{ f|add_class:"form-control" }}
+        {% endif %}
+        {{ f.errors }}
+      </div>
+    {% endfor %}
+
     <button type="submit" class="btn btn-success">Lưu</button>
-    <a href="{% url 'admin_product_list' %}" class="btn btn-secondary">Hủy</a>
+    <a href="{% url 'admin_product_list' %}" class="btn btn-secondary ms-2">Hủy</a>
   </form>
 </div>
 {% endblock %}

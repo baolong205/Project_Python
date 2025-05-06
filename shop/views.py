@@ -3,19 +3,38 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import Product, Category, Order, OrderItem, Review
 from .forms import ProductForm, CheckoutForm, ReviewForm
-
+from itertools import repeat
+from django.urls import reverse
+from django.conf import settings
 # Trang chủ + tìm kiếm/lọc
 def superuser_required(view_func):
     return login_required(user_passes_test(lambda u: u.is_superuser)(view_func))
 
+from django.shortcuts import render
+from .models import Category, Product
+
 def home(request):
+    slides = [
+        {
+            'image_url': settings.MEDIA_URL + 'banner/banner1.png',
+            "alt":         "Sale 5.5 Lazada",
+            "subtitle":    "Quà Galaxy linh đình",
+            "badges":      ["Voucher 7.5 triệu", "Mua 1 được 3", "Trả góp 0%"],
+        },
+        {
+            'image_url': settings.MEDIA_URL + 'banner/banner2.png',
+            "alt":         "Flash Sale",
+            "badges":      ["Giảm 50%", "Free ship 0₫"],
+        },
+    ]
     categories = Category.objects.all()
     qs = Product.objects.all()
+
     # Tìm kiếm & lọc cơ bản
-    q = request.GET.get('q', '').strip()
-    cat = request.GET.get('category', '')
-    price_min = request.GET.get('price_min', '')
-    price_max = request.GET.get('price_max', '')
+    q          = request.GET.get('q', '').strip()
+    cat        = request.GET.get('category', '')
+    price_min  = request.GET.get('price_min', '')
+    price_max  = request.GET.get('price_max', '')
     rating_min = request.GET.get('rating_min', '')
 
     if q:
@@ -27,18 +46,29 @@ def home(request):
     if price_max:
         qs = qs.filter(price__lte=price_max)
     if rating_min:
-        qs = qs.filter(rating__gte=rating_min)
+        qs = qs.filter(avg_rating__gte=rating_min)  # hoặc rating nếu bạn có trường rating
+
+    # Lấy danh sách các brand xuất hiện trong qs (sau lọc)
+    brands = qs.order_by('brand') \
+               .values_list('brand', flat=True) \
+               .distinct()
+
+    # Tạo dict: { brand1: [prod1, prod2], brand2: [...] }
+    products_by_brand = {
+        b: qs.filter(brand=b)
+        for b in brands
+    }
 
     return render(request, 'shop/product_list.html', {
-        'products': qs,
-        'categories': categories,
-        'q': q,
-        'category_filter': cat,
-        'price_min': price_min,
-        'price_max': price_max,
-        'rating_min': rating_min,
+        'slides':            slides,
+        'categories':        categories,
+        'q':                 q,
+        'category_filter':   cat,
+        'price_min':         price_min,
+        'price_max':         price_max,
+        'rating_min':        rating_min,
+        'products_by_brand': products_by_brand,
     })
-
 # Hiển thị sản phẩm theo danh mục
 def category_products(request, slug):
     categories = Category.objects.all()
@@ -57,11 +87,13 @@ def category_products(request, slug):
 
 # Chi tiết sản phẩm + đánh giá
 def product_detail(request, product_id):
-    product     = get_object_or_404(Product, id=product_id)
-    reviews     = product.reviews.select_related('user').all()
+    product = get_object_or_404(Product, id=product_id)
+    reviews = product.reviews.select_related('user').all()
+
+    # Khởi tạo form
     review_form = ReviewForm()
 
-    # Xử lý gửi review
+    # Xử lý POST gửi đánh giá
     if request.method == 'POST' and 'submit_review' in request.POST:
         if not request.user.is_authenticated:
             return redirect('login')
@@ -73,12 +105,15 @@ def product_detail(request, product_id):
             rev.save()
             return redirect('product_detail', product_id=product.id)
 
+    # Tính sao trung bình (nguyên) để hiển thị
+    avg_stars = range(int(product.avg_rating))
+    
     return render(request, 'shop/product_detail.html', {
-        'product':      product,
-        'reviews':      reviews,
-        'review_form':  review_form,
+        'product':     product,
+        'reviews':     reviews,
+        'review_form': review_form,
+        'avg_stars':   avg_stars,
     })
-
 # Giỏ hàng (session-based)
 def cart_view(request):
     cart = request.session.get('cart', {})
@@ -171,7 +206,7 @@ def order_success(request, order_id):
 # CRUD sản phẩm cho admin
 @superuser_required
 def admin_product_list(request):
-    products = Product.objects.all().order_by('-created_at')
+    products = Product.objects.all().order_by('id')
     return render(request, 'shop/admin_product_list.html', {'products': products})
 
 @superuser_required

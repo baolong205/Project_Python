@@ -1,33 +1,124 @@
+{# shop/templates/shop/product_list.html #}
 {% extends 'base.html' %}
 {% load static %}
 
+{% block extra_css %}
+<style>
+  /* Nhóm từng section theo brand */
+  .brand-section { margin-bottom: 3rem; }
+  .brand-title {
+    font-size: 1.5rem;
+    border-bottom: 2px solid #dee2e6;
+    padding-bottom: .5rem;
+    margin-bottom: 1rem;
+  }
+</style>
+{% endblock %}
+
 {% block content %}
-<h1> Sản phẩm</h1>
-
-<form method="get" action="{% url 'home' %}" class="d-flex gap-2 mb-4">
-</form>
-
-{% if products %}
-  <div class="row">
-    {% for p in products %}
-      <div class="col-md-3 mb-4">
-        <div class="card h-100">
-          {% if p.image %}
-            <img src="{{ p.image.url }}" class="card-img-top" alt="{{ p.name }}">
-          {% endif %}
-          <div class="card-body">
-            <h5 class="card-title">{{ p.name }}</h5>
-            <p class="card-text">{{ p.price_vnd }}</p>
-            <p>⭐ {{ p.rating }}</p>
-            <a href="{% url 'product_detail' p.id %}" class="btn btn-primary">
-              Xem chi tiết
+<div class="container mt-4">
+  <!-- Carousel banner -->
+  <div id="homeCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      {% for slide in slides %}
+        <button type="button"
+                data-bs-target="#homeCarousel"
+                data-bs-slide-to="{{ forloop.counter0 }}"
+                {% if forloop.first %}class="active"{% endif %}
+                aria-current="{% if forloop.first %}true{% endif %}"
+                aria-label="Slide {{ forloop.counter }}">
+        </button>
+      {% endfor %}
+    </div>
+    <div class="carousel-inner">
+      {% for slide in slides %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+          <img src="{{ slide.image_url }}"
+               class="d-block w-100"
+               alt="{{ slide.alt }}">
+          <div class="carousel-caption d-none d-md-block text-start">
+            <small class="badge bg-dark">{{ slide.promo_time }}</small>
+            <h2 class="fw-bold">{{ slide.title }}</h2>
+            <p class="lead">{{ slide.subtitle }}</p>
+            <div class="mb-3">
+              {% for badge in slide.badges %}
+                <span class="badge bg-warning text-dark me-1">{{ badge }}</span>
+              {% endfor %}
+            </div>
+            <a href="{{ slide.cta_url }}"
+               class="btn btn-primary btn-lg">
+              {{ slide.cta_text }}
             </a>
           </div>
         </div>
+      {% endfor %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#homeCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+      <span class="visually-hidden">Trước</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#homeCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+      <span class="visually-hidden">Tiếp</span>
+    </button>
+  </div>
+</div>
+<div class="container my-5">
+  {# --- Nếu dùng grouping by brand (products_by_brand) --- #}
+  {% if products_by_brand %}
+    {% for brand, prods in products_by_brand.items %}
+      <div class="brand-section">
+        <div class="brand-title">{{ brand }}</div>
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+          {% for p in prods %}
+            <div class="col">
+              <div class="card h-100">
+                {% if p.image %}
+                  <img src="{{ p.image.url }}" class="card-img-top" alt="{{ p.name }}">
+                {% else %}
+                  <img src="https://via.placeholder.com/300x200?text=No+Image"
+                       class="card-img-top" alt="No image">
+                {% endif %}
+                <div class="card-body d-flex flex-column">
+                  <h5 class="card-title">{{ p.name }}</h5>
+                  <p class="card-text text-danger fw-bold">{{ p.price_vnd }}</p>
+                  <a href="{% url 'product_detail' p.id %}"
+                     class="btn btn-outline-primary mt-auto">
+                    Xem chi tiết
+                  </a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
       </div>
     {% endfor %}
-  </div>
-{% else %}
-  <p>Không có sản phẩm nào phù hợp.</p>
-{% endif %}
+  {% else %}
+    {# --- Nếu không grouping, hiển thị thẳng products --- #}
+    {% if products %}
+      <div class="row row-cols-1 row-cols-md-4 g-4">
+        {% for p in products %}
+          <div class="col">
+            <div class="card h-100">
+              {% if p.image %}
+                <img src="{{ p.image.url }}" class="card-img-top" alt="{{ p.name }}">
+              {% endif %}
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{ p.name }}</h5>
+                <p class="card-text text-danger fw-bold">{{ p.price_vnd }}</p>
+                <a href="{% url 'product_detail' p.id %}"
+                   class="btn btn-outline-primary mt-auto">
+                  Xem chi tiết
+                </a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>Không có sản phẩm nào để hiển thị.</p>
+    {% endif %}
+  {% endif %}
+
+</div>
 {% endblock %}
